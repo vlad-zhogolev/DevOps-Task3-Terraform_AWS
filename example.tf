@@ -59,13 +59,15 @@ resource "aws_security_group" "db_instance" {
   vpc_id = data.aws_vpc.default.id
 }
 
-resource "aws_security_group_rule" "allow_db_access" {
-  type              = "ingress"
-  from_port         = var.port
-  to_port           = var.port
-  protocol          = "tcp"
-  security_group_id = aws_security_group.db_instance.id
-  cidr_blocks       = ["0.0.0.0/0"]
+resource "aws_security_group" "allow_db_access" {
+  name = "allow_db_access"
+  
+  ingress {
+    from_port = var.port
+    to_port = var.port
+    protocol = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 resource "aws_db_instance" "example_database" {
@@ -81,7 +83,7 @@ resource "aws_db_instance" "example_database" {
   skip_final_snapshot    = true
   license_model          = var.license_model
   db_subnet_group_name   = aws_db_subnet_group.example.id
-  vpc_security_group_ids = [aws_security_group.db_instance.id]
+  vpc_security_group_ids = [aws_security_group.allow_db_access.id]
   publicly_accessible    = true
   # parameter_group_name   = aws_db_parameter_group.example.id
   # option_group_name      = aws_db_option_group.example.id
