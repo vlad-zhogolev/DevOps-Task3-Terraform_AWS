@@ -280,7 +280,7 @@ output "web_server_public_ip" {
   description = "Public server IP"
 }
 
-output "this_db_instance_endpoint" {
+output "database_endpoint" {
   description = "The address of the RDS instance"
   value       = aws_db_instance.database.endpoint
 }
