@@ -1,0 +1,1 @@
+Mention about accessing DB via proxy
